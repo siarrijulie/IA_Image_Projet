@@ -1,0 +1,16 @@
+# Environnement Python
+venv/
+__pycache__/
+*.pyc
+
+# Données (trop lourdes pour GitHub)
+dataset/
+
+# Logs & modèles
+*.h5
+*.ckpt
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
