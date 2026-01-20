@@ -50,14 +50,27 @@ Les datasets ne sont **pas inclus** dans le dépôt GitHub.
 
 ### Structure attendue
 
-dataset/
-├─ training_set/
-│  ├─ class1/
-│  └─ class2/
-└─ test_set/
-   ├─ class1/
-   └─ class2/
-
+=======
+Projet_IA_Image/
+│
+├── cnn.py
+├── RK_Image_Classification_Bag_of_Visual_Words.py
+├── requirements.txt
+├── README.md
+├── .gitignore
+│
+├── dataset/                (NON inclus sur GitHub)
+│   ├── training_set/
+│   │   ├── class1/
+│   │   └── class2/
+│   └── test_set/
+│       ├── class1/
+│       └── class2/
+│
+├── documents/              
+│   └── consignes.pdf
+│
+└── venv/                   (NON inclus sur GitHub)
 
 ---
 
@@ -66,11 +79,3 @@ dataset/
 Lancer le script principal :
 
 python cnn.py
-
----
-
-## Remarques
-
-- TensorFlow s’exécute en mode CPU
-- Les poids peuvent être sauvegardés pour reprendre l’entraînement
-- Les fonctions d’activation utilisées sont ReLU et Sigmoid
