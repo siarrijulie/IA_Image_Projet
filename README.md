@@ -59,20 +59,21 @@ Projet_IA_Image/
 ├── README.md
 ├── .gitignore
 │
-├── dataset/                (NON inclus sur GitHub)
-│   ├── single_prediction/  (à créer à la main)
-│   │   └── cat_or_dog1.jpg
-│   ├── training_set/
-│   │   ├── class1/
-│   │   └── class2/
-│   └── test_set/
-│       ├── class1/
-│       └── class2/
+├── dataset/ # Non inclus sur GitHub
+│ ├── training_set/
+│ │ ├── class1/
+│ │ └── class2/
+│ └── test_set/
+│ ├── class1/
+│ └── class2/
 │
-├── documents/              
-│   └── consignes.pdf
+├── single_prediction/ # À créer manuellement
+│ └── cat_or_dog1.jpg
 │
-└── venv/                   (NON inclus sur GitHub)
+├── documents/
+│ └── consignes.pdf
+│
+└── venv/ # Non inclus sur GitHub
 
 ---
 
