@@ -60,6 +60,8 @@ Projet_IA_Image/
 ├── .gitignore
 │
 ├── dataset/                (NON inclus sur GitHub)
+│   ├── single_prediction/  (à créer à la main)
+│   │   └── cat_or_dog1.jpg
 │   ├── training_set/
 │   │   ├── class1/
 │   │   └── class2/
