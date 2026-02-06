@@ -7530,10 +7530,12 @@ et analyser l’impact du nombre de convolutions.</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [20]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Import des librairies necessaires pour le traitement des images,</span>
+<span class="c1"># la creation du CNN, l'entrainement du modele et le suivi des ressources</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequential</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.layers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Conv2D</span><span class="p">,</span> <span class="n">MaxPooling2D</span><span class="p">,</span> <span class="n">Flatten</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Dropout</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.layers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Conv2D</span><span class="p">,</span> <span class="n">MaxPooling2D</span><span class="p">,</span> <span class="n">Flatten</span><span class="p">,</span> <span class="n">Dense</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.preprocessing.image</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageDataGenerator</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tensorflow.keras.callbacks</span><span class="w"> </span><span class="kn">import</span> <span class="n">EarlyStopping</span><span class="p">,</span> <span class="n">ModelCheckpoint</span><span class="p">,</span> <span class="n">Callback</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -7553,7 +7555,8 @@ et analyser l’impact du nombre de convolutions.</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [21]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">IMG_SIZE</span> <span class="o">=</span> <span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Parametres globaux pour la taille des images, le batch et le nombre d'epochs</span>
+<span class="n">IMG_SIZE</span> <span class="o">=</span> <span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
 <span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">32</span>
 <span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">20</span>
 </pre></div>
@@ -7569,7 +7572,9 @@ et analyser l’impact du nombre de convolutions.</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">train_datagen</span> <span class="o">=</span> <span class="n">ImageDataGenerator</span><span class="p">(</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Preparation des donnees pour le dataset Intel (classification multi-classes)</span>
+<span class="c1"># Normalisation des images et augmentation de donnees pour l'entrainement</span>
+<span class="n">train_datagen</span> <span class="o">=</span> <span class="n">ImageDataGenerator</span><span class="p">(</span>
     <span class="n">rescale</span><span class="o">=</span><span class="mf">1.</span><span class="o">/</span><span class="mi">255</span><span class="p">,</span>
     <span class="n">zoom_range</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
     <span class="n">shear_range</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
@@ -7582,14 +7587,14 @@ et analyser l’impact du nombre de convolutions.</p>
     <span class="s2">"../dataset/seg_train"</span><span class="p">,</span>
     <span class="n">target_size</span><span class="o">=</span><span class="n">IMG_SIZE</span><span class="p">,</span>
     <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span>
-    <span class="n">class_mode</span><span class="o">=</span><span class="s2">"categorical"</span>  <span class="c1"># MULTICLASSE</span>
+    <span class="n">class_mode</span><span class="o">=</span><span class="s2">"categorical"</span>  <span class="c1"># multiclasse</span>
 <span class="p">)</span>
 
 <span class="n">validation_generator</span> <span class="o">=</span> <span class="n">validation_datagen</span><span class="o">.</span><span class="n">flow_from_directory</span><span class="p">(</span>
     <span class="s2">"../dataset/seg_test"</span><span class="p">,</span>
     <span class="n">target_size</span><span class="o">=</span><span class="n">IMG_SIZE</span><span class="p">,</span>
     <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span>
-    <span class="n">class_mode</span><span class="o">=</span><span class="s2">"categorical"</span>  <span class="c1"># MULTICLASSE</span>
+    <span class="n">class_mode</span><span class="o">=</span><span class="s2">"categorical"</span>  <span class="c1"># multiclasse</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -7618,7 +7623,9 @@ Found 3000 images belonging to 6 classes.
 <div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">build_cnn</span><span class="p">(</span><span class="n">nb_conv</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Fonction qui construit un CNN pour le dataset Intel</span>
+<span class="c1"># Le modele peut avoir 2 ou 3 convolutions et est adapte a la classification multi-classes</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_cnn</span><span class="p">(</span><span class="n">nb_conv</span><span class="p">):</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
 
     <span class="c1"># 1ère convolution</span>
@@ -7629,22 +7636,23 @@ Found 3000 images belonging to 6 classes.
     <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'relu'</span><span class="p">))</span>
     <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span>
 
-    <span class="c1"># 3ème convolution OPTIONNELLE</span>
+    <span class="c1"># 3ème convolution optionnelle</span>
     <span class="k">if</span> <span class="n">nb_conv</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
         <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'relu'</span><span class="p">))</span>
         <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)))</span>
 
+    <span class="c1"># Passage en vecteur et couches denses</span>
     <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Flatten</span><span class="p">())</span>
     <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'relu'</span><span class="p">))</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>           <span class="c1"># régularisation pour éviter overfitting</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>  <span class="c1"># regularisation pour limiter l'overfitting</span>
     <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">'softmax'</span><span class="p">))</span>  <span class="c1"># 6 classes pour Intel</span>
-    
+
+    <span class="c1"># Compilation du modele</span>
     <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
         <span class="n">optimizer</span><span class="o">=</span><span class="s1">'adam'</span><span class="p">,</span>
-        <span class="n">loss</span><span class="o">=</span><span class="s1">'categorical_crossentropy'</span><span class="p">,</span>  <span class="c1"># multiclasse</span>
+        <span class="n">loss</span><span class="o">=</span><span class="s1">'categorical_crossentropy'</span><span class="p">,</span>
         <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">'accuracy'</span><span class="p">]</span>
     <span class="p">)</span>
-
 
     <span class="k">return</span> <span class="n">model</span>
 </pre></div>
@@ -7660,13 +7668,14 @@ Found 3000 images belonging to 6 classes.
 <div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_cpu_ram</span><span class="p">():</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Fonctions pour recuperer l'utilisation du CPU, de la RAM et du GPU pendant l'entrainement</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_cpu_ram</span><span class="p">():</span>
     <span class="n">cpu_percent</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">cpu_percent</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">ram</span> <span class="o">=</span> <span class="n">psutil</span><span class="o">.</span><span class="n">virtual_memory</span><span class="p">()</span>
     <span class="n">ram_used_mb</span> <span class="o">=</span> <span class="n">ram</span><span class="o">.</span><span class="n">used</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cpu_percent</span><span class="p">,</span> <span class="n">ram_used_mb</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_gpu_stats</span><span class="p">():</span>
 
+<span class="k">def</span><span class="w"> </span><span class="nf">get_gpu_stats</span><span class="p">():</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">gpus</span> <span class="o">=</span> <span class="n">GPUtil</span><span class="o">.</span><span class="n">getGPUs</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">gpus</span><span class="p">:</span>
@@ -7688,7 +7697,9 @@ Found 3000 images belonging to 6 classes.
 <div class="jp-InputPrompt jp-InputArea-prompt">In [25]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">PerformanceCallback</span><span class="p">(</span><span class="n">Callback</span><span class="p">):</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Callback personnalise pour afficher le temps et l'utilisation des ressources</span>
+<span class="c1"># + fonction pour creer les callbacks (early stopping et sauvegarde des meilleurs poids)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PerformanceCallback</span><span class="p">(</span><span class="n">Callback</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_epoch_begin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">logs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
@@ -7703,9 +7714,11 @@ Found 3000 images belonging to 6 classes.
         <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">get_callbacks</span><span class="p">(</span><span class="n">nb_conv</span><span class="p">):</span>
+    <span class="c1"># Creation du dossier pour stocker les poids du modele</span>
     <span class="n">ckpt_dir</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"checkpoints_cnn_</span><span class="si">{</span><span class="n">nb_conv</span><span class="si">}</span><span class="s2">"</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">ckpt_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
+    <span class="c1"># Sauvegarde des meilleurs poids selon la validation</span>
     <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">ModelCheckpoint</span><span class="p">(</span>
         <span class="n">filepath</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ckpt_dir</span><span class="p">,</span> <span class="s2">"weights_epoch_</span><span class="si">{epoch:02d}</span><span class="s2">.h5"</span><span class="p">),</span>
         <span class="n">monitor</span><span class="o">=</span><span class="s2">"val_accuracy"</span><span class="p">,</span>
@@ -7714,6 +7727,7 @@ Found 3000 images belonging to 6 classes.
         <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span>
     <span class="p">)</span>
 
+    <span class="c1"># Early stopping pour arreter l'entrainement si la validation n'amelior plus</span>
     <span class="n">early_stop</span> <span class="o">=</span> <span class="n">EarlyStopping</span><span class="p">(</span>
         <span class="n">monitor</span><span class="o">=</span><span class="s2">"val_accuracy"</span><span class="p">,</span>
         <span class="n">patience</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
@@ -7735,7 +7749,8 @@ Found 3000 images belonging to 6 classes.
 <div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">model_2</span> <span class="o">=</span> <span class="n">build_cnn</span><span class="p">(</span><span class="n">nb_conv</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Creation et entrainement du modele CNN a 2 convolutions sur le dataset Intel</span>
+<span class="n">model_2</span> <span class="o">=</span> <span class="n">build_cnn</span><span class="p">(</span><span class="n">nb_conv</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="n">checkpoint</span><span class="p">,</span> <span class="n">early_stop</span><span class="p">,</span> <span class="n">ckpt_dir</span> <span class="o">=</span> <span class="n">get_callbacks</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 
@@ -7865,20 +7880,6 @@ Epoch 20: val_accuracy improved from 0.84677 to 0.85148, saving model to checkpo
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=3190eeef16d60ae">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="o">%%</span><span class="k">sql</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=58b1e8fb-f28e-48f8-a87c-34b4e2811de7">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
@@ -7887,7 +7888,8 @@ Epoch 20: val_accuracy improved from 0.84677 to 0.85148, saving model to checkpo
 <div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">model_3</span> <span class="o">=</span> <span class="n">build_cnn</span><span class="p">(</span><span class="n">nb_conv</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Creation et entrainement du modele CNN a 3 convolutions pour le dataset Intel</span>
+<span class="n">model_3</span> <span class="o">=</span> <span class="n">build_cnn</span><span class="p">(</span><span class="n">nb_conv</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
 <span class="n">checkpoint</span><span class="p">,</span> <span class="n">early_stop</span><span class="p">,</span> <span class="n">ckpt_dir</span> <span class="o">=</span> <span class="n">get_callbacks</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 
